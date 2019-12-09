@@ -342,6 +342,11 @@
             }
             //all key numbers can be found on the internet
         });
+        function left() {frog.left -= playerMovementNum}
+        
+       function up() {frog.top -= playerMovementNum}
+      function right() {frog.left += playerMovementNum}
+       function down() {frog.top += playerMovementNum}
 
     </script>
 </head>
@@ -349,7 +354,16 @@
 <body onload="initialize()">
 <canvas id="myCanvas" width="395.2" height="395.2" style="border:1px solid #000000;"></canvas>
 <button type="button" onclick="startAnimation()">Start Animation</button>
-<button type="button" onclick="stopAnimation()">Stop Animation</button>
+<button type="button" onclick="stopAnimation()">Stop Animation</button><br>
+<button type="button" onclick="left()">Left</button>
+<button type="button" onclick="up()">Up--</button>
+<button type="button" onclick="right()">Right</button>
+    <br>
+<button type="button" onclick="placeholder()">----</button>
+<button type="button" onclick="down()">Down</button>
+    <button type="button" onclick="placeholder()">----</button>
+    
+    
 </body>
 
 </html>
