@@ -347,6 +347,16 @@
        function up() {frog.top -= playerMovementNum}
       function right() {frog.left += playerMovementNum}
        function down() {frog.top += playerMovementNum}
+        function lossRestart() { 
+dead = false;
+                    lives = 3;
+                    for(let i = 0; i < speed; i++){
+                        cancelAnimationFrame(a);
+                    }
+                    animate();
+                    restart();
+        }
+        function placeholder() {}
 
     </script>
 </head>
@@ -362,6 +372,8 @@
 <button type="button" onclick="placeholder()">----</button>
 <button type="button" onclick="down()">Down</button>
     <button type="button" onclick="placeholder()">----</button>
+    <br><br>
+    <button type="button" onclick = "lossRestart()">Game Over Restart</button>
     
     
 </body>
