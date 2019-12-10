@@ -3,16 +3,11 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Frogger!</title>
     <!-- This code is necessary to install the jquery library.  Just copy and paste it.-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
     <script>
-        let a;
-        let doOnce = 0;
-        let onLog = false;
-        let lives = 3;
-        let dead = false;
-        let speed = 0;
         let createImage = function (src, title, xcoord, ycoord) {
             let img = new Image();
             img.src = src;
@@ -23,12 +18,31 @@
 
             return img;
         };
+        let a;
+        let doOnce = 0;
+        let onLog = false;
+        let lives = 3;
+        let dead = false;
+        let speed = 0;
+        let log1 = createImage("resources/Log.png", "Log1", -300, 334.8);
+        let log2 = createImage("resources/Log.png", "Log2", -200, 304.6);
+        let log3 = createImage("resources/Log.png", "Log3", -250, 244.2);
+        let log4 = createImage("resources/Log.png", "Log4", -350, 214);
+        let log5 = createImage("resources/Log.png", "Log4", -150, 183.8);
+        let car1 = createImage("resources/Car.png", "car", -1000, 120.8);
+        let car2 = createImage("resources/Car.png", "car", -1200, 61.6);
+        let car3 = createImage("resources/Car.png", "car", -900, 31.2);
+        let heart1 = createImage("resources/Heart.png", "heart1", 0, 365.2);
+        let heart2 = createImage("resources/Heart.png", "heart2", 45, 365.2);
+        let heart3 = createImage("resources/Heart.png", "heart3", 90, 365.2);
         let frog = createImage("resources/Frogger.png", "frog", 197.6, 364.8);
 
         function initialize() {
             const ctx = document.getElementById("myCanvas").getContext("2d");
             drawBackground();
             ctx.drawImage(frog, frog.left, frog.top, 40, 40);
+            startAnimation()
+
 
         }
 
@@ -51,16 +65,15 @@
             if (dead === false) {
                 drawBackground();
                 drawImage();
-                checkCollisionJ();
-                playerBounds();
                 movement();
                 livesFunction();
                 level();
-            } else {
-                console.log("dead?")
+                wallCollisions();
+                logCollision();
+                carCollision();
             }
-            if(doOnce === 1){
-                setTimeout(yes =>{
+            if (doOnce === 1) {
+                setTimeout(yes => {
                     doOnce = 0;
                 }, 3)
             }
@@ -81,18 +94,6 @@
             ctx.fillRect(0, 153.2, 500, 30.2);
             ctx.fillRect(0, 92.8, 500, 30.2)
         }
-
-        let log1 = createImage("resources/Log.png", "Log1", -300, 334.8);
-        let log2 = createImage("resources/Log.png", "Log2", -200, 304.6);
-        let log3 = createImage("resources/Log.png", "Log3", -250, 244.2);
-        let log4 = createImage("resources/Log.png", "Log4", -350, 214);
-        let log5 = createImage("resources/Log.png", "Log4", -150, 183.8);
-        let car1 = createImage("resources/Car.png", "car", -1000, 120.8);
-        let car2 = createImage("resources/Car.png", "car", -1200, 61.6);
-        let car3 = createImage("resources/Car.png", "car", -900, 31.2);
-        let heart1 = createImage("resources/Heart.png", "heart1", 0, 365.2);
-        let heart2 = createImage("resources/Heart.png", "heart2", 45, 365.2);
-        let heart3 = createImage("resources/Heart.png", "heart3", 90, 365.2);
 
         function restart() {
             frog = createImage("resources/Frogger.png", "frog", 197.6, 364.8);
@@ -156,9 +157,20 @@
             car3.left += 9;
         }
 
-        function checkCollisionJ() {
-            onLog = false;
+        function wallCollisions() {
             const ctx = document.getElementById("myCanvas").getContext("2d");
+            if (frog.left > 355.2) {
+                frog.left = 355.2
+            }
+            if (frog.left < 1) {
+                frog.left = 1
+            }
+            if (frog.top > 364.8) {
+                frog.top = 364.8
+            }
+            if (frog.top < -5) {
+                frog.top = -5
+            }
             if (log1.left > 500) {
                 log1.left = -100
             }
@@ -183,50 +195,23 @@
             if (car3.left > 500) {
                 car3.left = -1000;
             }
-            if (frog.left > car1.left && frog.left < car1.left + 40) {
-                let leftBound = true;
-            }
-            if (frog.left <= car1.left && frog.left + 40 >= car1.left && frog.top <= car1.top && frog.top + 30.4 <= car1.top && car1.top <= frog.top + 30) {
-                lives = lives - 1;
-                restart();
+        }
 
-            }
-            if (frog.left <= car1.left && frog.left + 40 >= car1.left && frog.top >= car1.top && frog.top + 30.4 >= car1.top && car1.top + 30 >= frog.top) {
-                lives = lives - 1;
-                restart();
-
-            }
-            if (frog.left <= car2.left && frog.left + 40 >= car2.left && frog.top <= car2.top && frog.top + 30.4 <= car2.top && car2.top <= frog.top + 30) {
-                lives = lives - 1;
-                restart();
-
-            }
-            if (frog.left <= car2.left && frog.left + 40 >= car2.left && frog.top >= car2.top-0.8 && frog.top + 30.4 >= car2.top && car2.top + 29.5 >= frog.top) {
-                console.log(`Frog's top: ${frog.top}, Car's top: ${car2.top}`);
-                lives = lives - 1;
-                restart();
-            }
-            if (frog.left <= car3.left && frog.left + 40 >= car3.left && frog.top <= car3.top && frog.top + 30.4 <= car3.top && car3.top <= frog.top + 30) {
-                lives = lives - 1;
-                restart()
-            }
-            if (frog.left <= car3.left && frog.left + 40 >= car3.left && frog.top >= car3.top-0.8 && frog.top + 30.4 >= car3.top && car3.top + 29.5 >= frog.top) {
-                lives = lives - 1;
-                restart();
-            }
-            if (log1.left < frog.left && log1.left + 167 > frog.left && log1.top - 0.9 < frog.top && log1.top + 29.7 > frog.top) {
+        function logCollision() {
+            onLog = false;
+            if (log1.left < frog.left && log1.left + 167 > frog.left && log1.top - 0.9 < frog.top && log1.top + 29.8 > frog.top) {
                 onLog = true;
             }
-            if (log2.left < frog.left && log2.left + 167 > frog.left && log2.top - 0.9 < frog.top && log2.top + 29.8 > frog.top) {
+            if (log2.left < frog.left && log2.left + 167 > frog.left && log2.top - 0.9 < frog.top && log2.top + 29.7 > frog.top) {
                 onLog = true;
             }
-            if (log3.left < frog.left && log3.left + 167 > frog.left && log3.top - 1 < frog.top && log3.top + 450000 > frog.top) {
+            if (log3.left < frog.left && log3.left + 167 > frog.left && log3.top - 1 < frog.top && log3.top + 29.5 > frog.top) {
                 onLog = true;
             }
-            if (log4.left < frog.left && log4.left + 167 > frog.left && log4.top - 1.2 < frog.top && log4.top + 29.5 > frog.top) {
+            if (log4.left < frog.left && log4.left + 167 > frog.left && log4.top - 1.2 < frog.top && log4.top + 29 > frog.top) {
                 onLog = true;
             }
-            if (log5.left < frog.left && log5.left + 167 > frog.left && log5.top - 1.4 < frog.top && log5.top + 29.5 > frog.top) {
+            if (log5.left < frog.left && log5.left + 167 > frog.left && log5.top - 1.4 < frog.top && log5.top + 29 > frog.top) {
                 onLog = true;
             }
             if (frog.top > 182.3 && frog.top < 273.6) {
@@ -245,7 +230,37 @@
                     }, 1);
                 }
             }
+        }
 
+        function carCollision() {
+            if (frog.left <= car1.left && frog.left + 40 >= car1.left && frog.top <= car1.top && frog.top + 30.4 <= car1.top && car1.top <= frog.top + 30) {
+                lives = lives - 1;
+                restart();
+
+            }
+            if (frog.left <= car1.left && frog.left + 40 >= car1.left && frog.top >= car1.top && frog.top + 30.4 >= car1.top && car1.top + 30 >= frog.top) {
+                lives = lives - 1;
+                restart();
+
+            }
+            if (frog.left <= car2.left && frog.left + 40 >= car2.left && frog.top <= car2.top && frog.top + 30.4 <= car2.top && car2.top <= frog.top + 30) {
+                lives = lives - 1;
+                restart();
+
+            }
+            if (frog.left <= car2.left && frog.left + 40 >= car2.left && frog.top >= car2.top - 0.8 && frog.top + 30.4 >= car2.top && car2.top + 29.5 >= frog.top) {
+                console.log(`Frog's top: ${frog.top}, Car's top: ${car2.top}`);
+                lives = lives - 1;
+                restart();
+            }
+            if (frog.left <= car3.left && frog.left + 40 >= car3.left && frog.top <= car3.top && frog.top + 30.4 <= car3.top && car3.top <= frog.top + 30) {
+                lives = lives - 1;
+                restart()
+            }
+            if (frog.left <= car3.left && frog.left + 40 >= car3.left && frog.top >= car3.top - 0.8 && frog.top + 30.4 >= car3.top && car3.top + 29.5 >= frog.top) {
+                lives = lives - 1;
+                restart();
+            }
         }
 
         function level() {
@@ -255,7 +270,7 @@
             ctx.fillText(speed, 380, 385);
             if (parseInt(frog.top) === 4) {
                 setTimeout(hiMrFranco => {
-                    if(doOnce === 0){
+                    if (doOnce === 0) {
                         animate();
                         speed = speed + 1;
                         alert("Level Up");
@@ -270,31 +285,19 @@
         function deadScreen() {
             if (dead === true) {
                 const ctx = document.getElementById("myCanvas").getContext("2d");
-                ctx.fillStyle = "black"
-                ctx.fillRect(0, 0, 500, 500)
-                ctx.fillStyle = "white"
-                ctx.font = "30px Arial"
-                ctx.fillText("Game Over", 120, 160)
+                ctx.fillStyle = "black";
+                ctx.fillRect(0, 0, 500, 500);
+                ctx.fillStyle = "white";
+                ctx.font = "30px Arial";
+                ctx.fillText("Game Over", 120, 160);
                 ctx.font = "20px Arial";
                 ctx.fillText("Press 'space' to restart!", 120, 200)
+                setTimeout(death => {
+                    location.reload(false)
+                }, 2000)
             }
         }
 
-
-        function playerBounds() {
-            if (frog.left > 355.2) {
-                frog.left = 355.2
-            }
-            if (frog.left < 1) {
-                frog.left = 1
-            }
-            if (frog.top > 364.8) {
-                frog.top = 364.8
-            }
-            if (frog.top < -5) {
-                frog.top = -5
-            }
-        }
 
         let playerMovementNum = 30.4;
         //Keypress Event code
@@ -302,15 +305,9 @@
             //jQuery code to recognize a keydown event
             let keycode = (event.keyCode ? event.keyCode : event.which);
             if (dead === false) {
-                if (keycode === 13) {
-                }
-                if (keycode === 27) {
-                    stopAnimation()
-                }
                 if (keycode === 37) //left arrow
                 {
                     frog.left -= playerMovementNum
-
                 }
                 if (keycode === 38) //up arrow
                 {
@@ -324,58 +321,49 @@
                 {
                     frog.top += playerMovementNum
                 }
-
-                if (keycode === 32) {
-                    frog.top = log1.top + 30;
-                    frog.left = log1.left;
-                }
             } else {
                 if (keycode === 32) {
-                    dead = false;
-                    lives = 3;
-                    for(let i = 0; i < speed; i++){
-                        cancelAnimationFrame(a);
-                    }
-                    animate();
-                    restart();
+                    location.reload(false);
                 }
             }
             //all key numbers can be found on the internet
         });
-        function left() {frog.left -= playerMovementNum}
-        
-       function up() {frog.top -= playerMovementNum}
-      function right() {frog.left += playerMovementNum}
-       function down() {frog.top += playerMovementNum}
-        function lossRestart() { 
-		    dead = false;
-                    lives = 3;
-                    for(let i = 0; i < speed; i++){
-                        cancelAnimationFrame(a);
-                    }
-                    animate();
-                    restart();
+
+        function left() {
+            frog.left -= playerMovementNum
         }
-        function placeholder() {}
+
+        function up() {
+            frog.top -= playerMovementNum
+        }
+
+        function right() {
+            frog.left += playerMovementNum
+        }
+
+        function down() {
+            frog.top += playerMovementNum
+        }
+
+        function placeholder() {
+        }
 
     </script>
 </head>
 
 <body onload="initialize()">
+
 <canvas id="myCanvas" width="395.2" height="395.2" style="border:1px solid #000000;"></canvas>
-<button type="button" onclick="startAnimation()">Start Animation</button>
-<button type="button" onclick="stopAnimation()">Stop Animation</button><br>
+<br>
 <button type="button" onclick="left()">Left</button>
 <button type="button" onclick="up()">Up--</button>
 <button type="button" onclick="right()">Right</button>
-    <br>
+<br>
 <button type="button" onclick="placeholder()">----</button>
 <button type="button" onclick="down()">Down</button>
-    <button type="button" onclick="placeholder()">----</button>
-    <br><br>
-    <button type="button" onclick = "lossRestart()">Game Over Restart</button>
-    
-    
+<button type="button" onclick="placeholder()">----</button>
+
+
 </body>
 
 </html>
