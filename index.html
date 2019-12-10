@@ -214,19 +214,19 @@
                 lives = lives - 1;
                 restart();
             }
-            if (log1.left < frog.left && log1.left + 167 > frog.left && log1.top - 0.9 < frog.top && log1.top + 30.2 > frog.top) {
+            if (log1.left < frog.left && log1.left + 167 > frog.left && log1.top - 0.9 < frog.top && log1.top + 29.7 > frog.top) {
                 onLog = true;
             }
-            if (log2.left < frog.left && log2.left + 167 > frog.left && log2.top - 0.9 < frog.top && log2.top + 30.2 > frog.top) {
+            if (log2.left < frog.left && log2.left + 167 > frog.left && log2.top - 0.9 < frog.top && log2.top + 29.8 > frog.top) {
                 onLog = true;
             }
-            if (log3.left < frog.left && log3.left + 167 > frog.left && log3.top - 3 < frog.top && log3.top + 30.2 > frog.top) {
+            if (log3.left < frog.left && log3.left + 167 > frog.left && log3.top - 1 < frog.top && log3.top + 450000 > frog.top) {
                 onLog = true;
             }
-            if (log4.left < frog.left && log4.left + 167 > frog.left && log4.top - 3 < frog.top && log4.top + 30.2 > frog.top) {
+            if (log4.left < frog.left && log4.left + 167 > frog.left && log4.top - 1.2 < frog.top && log4.top + 29.5 > frog.top) {
                 onLog = true;
             }
-            if (log5.left < frog.left && log5.left + 167 > frog.left && log5.top - 3 < frog.top && log5.top + 30.2 > frog.top) {
+            if (log5.left < frog.left && log5.left + 167 > frog.left && log5.top - 1.4 < frog.top && log5.top + 29.5 > frog.top) {
                 onLog = true;
             }
             if (frog.top > 182.3 && frog.top < 273.6) {
@@ -348,7 +348,7 @@
       function right() {frog.left += playerMovementNum}
        function down() {frog.top += playerMovementNum}
         function lossRestart() { 
-dead = false;
+		    dead = false;
                     lives = 3;
                     for(let i = 0; i < speed; i++){
                         cancelAnimationFrame(a);
