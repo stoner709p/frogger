@@ -6,15 +6,17 @@
     <title>Frogger!</title>
     <!-- This code is necessary to install the jquery library.  Just copy and paste it.-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
 
     <script>
-        let createImage = function (src, title, xcoord, ycoord) {
+        let createImage = function (src, title, xcoord, ycoord, speed) {
             let img = new Image();
             img.src = src;
             img.alt = title;
             img.title = title;
             img.left = xcoord;
             img.top = ycoord;
+            img.speed = speed;
 
             return img;
         };
@@ -24,18 +26,18 @@
         let lives = 3;
         let dead = false;
         let speed = 0;
-        let log1 = createImage("resources/Log.png", "Log1", -300, 334.8);
-        let log2 = createImage("resources/Log.png", "Log2", -200, 304.6);
-        let log3 = createImage("resources/Log.png", "Log3", -250, 244.2);
-        let log4 = createImage("resources/Log.png", "Log4", -350, 214);
-        let log5 = createImage("resources/Log.png", "Log4", -150, 183.8);
-        let car1 = createImage("resources/Car.png", "car", -1000, 120.8);
-        let car2 = createImage("resources/Car.png", "car", -1200, 61.6);
-        let car3 = createImage("resources/Car.png", "car", -900, 31.2);
-        let heart1 = createImage("resources/Heart.png", "heart1", 0, 365.2);
-        let heart2 = createImage("resources/Heart.png", "heart2", 45, 365.2);
-        let heart3 = createImage("resources/Heart.png", "heart3", 90, 365.2);
-        let frog = createImage("resources/Frogger.png", "frog", 197.6, 364.8);
+        let log1 = createImage("resources/Log.png", "Log1", -300, 334.8, 1);
+        let log2 = createImage("resources/Log.png", "Log2", -200, 304.6, 2);
+        let log3 = createImage("resources/Log.png", "Log3", -250, 244.2, 2);
+        let log4 = createImage("resources/Log.png", "Log4", -350, 214, 2);
+        let log5 = createImage("resources/Log.png", "Log4", -150, 183.8, 1);
+        let car1 = createImage("resources/Car.png", "car", -1000, 120.8, 9);
+        let car2 = createImage("resources/Car.png", "car", -1200, 61.6, 9);
+        let car3 = createImage("resources/Car.png", "car", -900, 31.2, 9);
+        let heart1 = createImage("resources/Heart.png", "heart1", 0, 365.2, 0);
+        let heart2 = createImage("resources/Heart.png", "heart2", 45, 365.2, 0);
+        let heart3 = createImage("resources/Heart.png", "heart3", 90, 365.2, 0);
+        let frog = createImage("resources/FroggerUp.png", "frog", 197.6, 364.8, 30.4);
 
         function initialize() {
             const ctx = document.getElementById("myCanvas").getContext("2d");
@@ -96,18 +98,18 @@
         }
 
         function restart() {
-            frog = createImage("resources/Frogger.png", "frog", 197.6, 364.8);
-            log1 = createImage("resources/Log.png", "Log1", -300, 334.8);
-            log2 = createImage("resources/Log.png", "Log2", -200, 304.6);
-            log3 = createImage("resources/Log.png", "Log3", -250, 244.2);
-            log4 = createImage("resources/Log.png", "Log4", -350, 214);
-            log5 = createImage("resources/Log.png", "Log4", -150, 183.8);
-            car1 = createImage("resources/Car.png", "car", -1000, 120.8);
-            car2 = createImage("resources/Car.png", "car", -1200, 61.6);
-            car3 = createImage("resources/Car.png", "car", -900, 31.2);
-            heart1 = createImage("resources/Heart.png", "heart1", 0, 365.2);
-            heart2 = createImage("resources/Heart.png", "heart1", 45, 365.2);
-            heart3 = createImage("resources/Heart.png", "heart1", 90, 365.2);
+            log1 = createImage("resources/Log.png", "Log1", -300, 334.8, 1);
+            log2 = createImage("resources/Log.png", "Log2", -200, 304.6, 2);
+            log3 = createImage("resources/Log.png", "Log3", -250, 244.2, 2);
+            log4 = createImage("resources/Log.png", "Log4", -350, 214, 2);
+            log5 = createImage("resources/Log.png", "Log4", -150, 183.8, 1);
+            car1 = createImage("resources/Car.png", "car", -1000, 120.8, 9);
+            car2 = createImage("resources/Car.png", "car", -1200, 61.6, 9);
+            car3 = createImage("resources/Car.png", "car", -900, 31.2, 9);
+            heart1 = createImage("resources/Heart.png", "heart1", 0, 365.2, 0);
+            heart2 = createImage("resources/Heart.png", "heart2", 45, 365.2, 0);
+            heart3 = createImage("resources/Heart.png", "heart3", 90, 365.2, 0);
+            frog = createImage("resources/FroggerUp.png", "frog", 197.6, 364.8, 30.4);
 
         }
 
@@ -147,14 +149,14 @@
         }
 
         function movement() {
-            log1.left += 1;
-            log2.left += 2;
-            log3.left += 2;
-            log4.left += 2;
-            log5.left += 1;
-            car1.left += 9;
-            car2.left += 9;
-            car3.left += 9;
+            log1.left += log1.speed;
+            log2.left += log2.speed;
+            log3.left += log3.speed;
+            log4.left += log4.speed;
+            log5.left += log5.speed;
+            car1.left += car1.speed;
+            car2.left += car2.speed;
+            car3.left += car3.speed;
         }
 
         function wallCollisions() {
@@ -201,18 +203,23 @@
             onLog = false;
             if (log1.left < frog.left && log1.left + 167 > frog.left && log1.top - 0.9 < frog.top && log1.top + 29.8 > frog.top) {
                 onLog = true;
+                frog.left += log1.speed
             }
             if (log2.left < frog.left && log2.left + 167 > frog.left && log2.top - 0.9 < frog.top && log2.top + 29.7 > frog.top) {
                 onLog = true;
+                frog.left += log2.speed
             }
-            if (log3.left < frog.left && log3.left + 167 > frog.left && log3.top - 1 < frog.top && log3.top + 29.5 > frog.top) {
+            if (log3.left < frog.left && log3.left + 167 > frog.left && log3.top - 1 < frog.top && log3.top + 29 > frog.top) {
                 onLog = true;
+                frog.left += log3.speed
             }
             if (log4.left < frog.left && log4.left + 167 > frog.left && log4.top - 1.2 < frog.top && log4.top + 29 > frog.top) {
                 onLog = true;
+                frog.left += log4.speed
             }
             if (log5.left < frog.left && log5.left + 167 > frog.left && log5.top - 1.4 < frog.top && log5.top + 29 > frog.top) {
                 onLog = true;
+                frog.left += log5.speed
             }
             if (frog.top > 182.3 && frog.top < 273.6) {
                 if (onLog === false) {
@@ -289,17 +296,13 @@
                 ctx.fillRect(0, 0, 500, 500);
                 ctx.fillStyle = "white";
                 ctx.font = "30px Arial";
-                ctx.fillText("Game Over", 120, 160);
-                ctx.font = "20px Arial";
-                ctx.fillText("Press 'space' to restart!", 120, 200)
+                ctx.fillText("Game Over", 150, 160);
                 setTimeout(death => {
                     location.reload(false)
                 }, 2000)
             }
         }
 
-
-        let playerMovementNum = 30.4;
         //Keypress Event code
         $(document).keydown(function (event) {
             //jQuery code to recognize a keydown event
@@ -307,19 +310,23 @@
             if (dead === false) {
                 if (keycode === 37) //left arrow
                 {
-                    frog.left -= playerMovementNum
+                    frog.left -= frog.speed
+                    frog.src = "resources/FroggerLeft.png"
                 }
                 if (keycode === 38) //up arrow
                 {
-                    frog.top -= playerMovementNum
+                    frog.top -= frog.speed
+                    frog.src = "resources/FroggerUp.png"
                 }
                 if (keycode === 39) //right arrow
                 {
-                    frog.left += playerMovementNum
+                    frog.left += frog.speed
+                    frog.src = "resources/FroggerRight.png"
                 }
                 if (keycode === 40) //down arrow
                 {
-                    frog.top += playerMovementNum
+                    frog.top += frog.speed
+                    frog.src = "resources/FroggerDown.png"
                 }
             } else {
                 if (keycode === 32) {
@@ -329,20 +336,40 @@
             //all key numbers can be found on the internet
         });
 
+        $(document).on("swipe", swipeHandler)
+        function swipeHandler(event){
+            let startcorods = event.swipestart.coords
+            let endcoords = event.swipestop.coords;
+            if(startcorods[0] < endcoords[0]){
+                frog.left = frog.left + frog.speed
+            }
+            if(startcorods[0] > endcoords[0]){
+                frog.left = frog.left - frog.speed
+            }
+            console.log(startcorods)
+            console.log(endcoords)
+            if(startcorods[1] < endcoords[1]){
+                frog.top = frog.top + frog.speed
+            }
+            if(startcorods[1] > endcoords[1]){
+                frog.top = frog.top - frog.speed;
+            }
+
+        }
         function left() {
-            frog.left -= playerMovementNum
+            frog.left -= frog.speed
         }
 
         function up() {
-            frog.top -= playerMovementNum
+            frog.top -= frog.speed
         }
 
         function right() {
-            frog.left += playerMovementNum
+            frog.left += frog.speed
         }
 
         function down() {
-            frog.top += playerMovementNum
+            frog.top += frog.speed
         }
 
         function placeholder() {
